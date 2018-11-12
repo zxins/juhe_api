@@ -14,7 +14,7 @@ class JuheNews(object):
         self.key = 'dd406a5a02288cbe8b0a8b8b3c05f852'
         self.host = 'http://v.juhe.cn/toutiao/index'
 
-    def get_news(self, news_type=None):
+    def __get_news(self, news_type=None):
 
         try:
 
@@ -41,51 +41,71 @@ class JuheNews(object):
             raise e
 
     @property
+    def default(self):
+        return self.__get_news()
+
+    @property
     def top(self):
 
-        return self.get_news('top')
+        return self.__get_news('top')
 
     @property
     def shehui(self):
 
-        return self.get_news('shehui')
+        return self.__get_news('shehui')
 
     @property
     def guonei(self):
 
-        return self.get_news('guonei')
+        return self.__get_news('guonei')
 
     @property
     def guoji(self):
 
-        return self.get_news('guoji')
+        return self.__get_news('guoji')
 
     @property
     def yule(self):
 
-        return self.get_news('yule')
+        return self.__get_news('yule')
 
     @property
     def tiyu(self):
 
-        return self.get_news('tiyu')
+        return self.__get_news('tiyu')
 
     @property
     def junshi(self):
 
-        return self.get_news('junshi')
+        return self.__get_news('junshi')
 
     @property
     def keji(self):
 
-        return self.get_news('keji')
+        return self.__get_news('keji')
 
     @property
     def caijing(self):
 
-        return self.get_news('caijing')
+        return self.__get_news('caijing')
 
     @property
     def shishang(self):
 
-        return self.get_news('shishang')
+        return self.__get_news('shishang')
+
+    @property
+    def all(self):
+        news = list()
+        news.extend(self.default)
+        news.extend(self.top)
+        news.extend(self.guonei)
+        news.extend(self.guoji)
+        news.extend(self.yule)
+        news.extend(self.tiyu)
+        news.extend(self.junshi)
+        news.extend(self.keji)
+        news.extend(self.caijing)
+        news.extend(self.shishang)
+        return news
+
