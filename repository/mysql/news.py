@@ -1,6 +1,9 @@
 # -*- coding:utf-8 -*-
 import json
 import when
+
+from sqlalchemy.orm.exc import NoResultFound
+
 from entity.news import News
 from toolkit.args import accepts
 from repository.mysql import get_session, NewsModel
@@ -58,14 +61,37 @@ class NewsRepository(object):
             'author_name': model.author_name,
             'url': model.url,
             'date': model.date,
-            'pictures': model.pictures,
+            'pictures': json.loads(model.pictures),
             'category': model.category,
         }
 
         return News(**params)
 
+    def find_many(self, **kwargs):
+        try:
+            criterion = [getattr(NewsModel, i) == kwargs[i] for i in kwargs]
+            models = self.session.query(NewsModel).filter(*criterion).all()
+            news = []
+            for model in models:
+                new = self.model_to_entity(model)
+                news.append(new)
+            return news
+
+        except NoResultFound:
+            return []
+
     def find_by_category(self, category):
         models = self.session.query(NewsModel).filter(NewsModel.category == category).all()
+
+        news = []
+        for model in models:
+            new = self.model_to_entity(model)
+            news.append(new)
+        return news
+
+    def find_today(self):
+        date = str(when.today())
+        models = self.session.query(NewsModel).filter(NewsModel.date >= date).all()
 
         news = []
         for model in models:
