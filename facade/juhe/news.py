@@ -41,63 +41,58 @@ class JuheNews(object):
             raise e
 
     @property
-    def default(self):
-        return self.__get_news()
-
-    @property
     def top(self):
-
+        """ 头条, 默认 """
         return self.__get_news('top')
 
     @property
     def shehui(self):
-
+        """ 社会 """
         return self.__get_news('shehui')
 
     @property
     def guonei(self):
-
+        """ 国内 """
         return self.__get_news('guonei')
 
     @property
     def guoji(self):
-
+        """ 国际 """
         return self.__get_news('guoji')
 
     @property
     def yule(self):
-
+        """ 娱乐 """
         return self.__get_news('yule')
 
     @property
     def tiyu(self):
-
+        """ 体育 """
         return self.__get_news('tiyu')
 
     @property
     def junshi(self):
-
+        """ 军事 """
         return self.__get_news('junshi')
 
     @property
     def keji(self):
-
+        """ 科技 """
         return self.__get_news('keji')
 
     @property
     def caijing(self):
-
+        """ 财经 """
         return self.__get_news('caijing')
 
     @property
     def shishang(self):
-
+        """ 时尚 """
         return self.__get_news('shishang')
 
     @property
     def all(self):
         news = list()
-        news.extend(self.default)
         news.extend(self.top)
         news.extend(self.guonei)
         news.extend(self.guoji)

@@ -1,13 +1,13 @@
 # -*- coding:utf-8 -*-
 import shortuuid
-from schemer import Schema, Array
+from schemer import Schema
+from toolkit.news_category import get_category
 
 
 class News(object):
     """ 新闻实体类 """
 
     def __init__(self, **kwargs):
-
         # 先对参数做校验,校验不通过不生成News对象
         params_schema = Schema({
             'no': {'type': basestring, 'required': False, 'default': shortuuid.uuid().upper()},
@@ -28,7 +28,7 @@ class News(object):
         self.url = kwargs.get('url')
         self.date = kwargs.get('date')
         self.pictures = kwargs.get('pictures')
-        self.category = kwargs.get('category')
+        self.category = get_category(kwargs.get('category'))
 
     @property
     def is_default(self):

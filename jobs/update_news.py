@@ -1,5 +1,4 @@
 # -*- coding:utf-8 -*-
-
 from entity.news import News
 from facade.juhe.news import JuheNews
 from repository.mysql.news import NewsRepository
@@ -11,14 +10,7 @@ def update_news():
 
         news = list()
         for row in jn.all:
-            i = 0
-            pictures = dict()
-            for k, v in row.items():
-                if 'thumbnail' in k:
-                    i += 1
-                    key = 'img{0}'.format(str(i))
-                    pictures[key] = v
-
+            pictures = get_pictures(row)
             param = {
                 'no': row.get('uniquekey'),
                 'title': row.get('title'),
@@ -39,5 +31,30 @@ def update_news():
         raise e
 
 
+def get_pictures(data):
+    i = 0
+    pictures = dict()
+    for k, v in data.items():
+        if 'thumbnail' in k:
+            i += 1
+            key = 'img{0}'.format(str(i))
+            pictures[key] = v
+    return pictures
+
+
+def start_cron_job():
+    """ 定时任务入口 """
+
+    import time
+    import schedule
+
+    schedule.every().day.at('08:00').do(update_news)
+    schedule.every().day.at('12:00').do(update_news)
+
+    while True:
+        schedule.run_pending()
+        time.sleep(2)
+
+
 if __name__ == '__main__':
-    update_news()
+    start_cron_job()
